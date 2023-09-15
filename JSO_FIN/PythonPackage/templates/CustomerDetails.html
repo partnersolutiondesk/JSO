@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include the Vue.js and Axios CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h3 class="p-3 text-center">Customer Details</h3>
+    <table>
+
+        <tbody>
+            <tr>
+                <td>First Name</td>
+                <td> <input type="text" ref="first_name" v-model="customer.First_Name" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td></tr>
+               <tr> <td>Last Name</td>
+              <td> <input type="text" ref="last_name" v-model="customer.Last_Name" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+        </tbody>
+    </table>
+       <button @click="isEditing = !isEditing" v-if="!isEditing">
+    Edit
+  </button>
+  <button @click="editSave" v-else-if="isEditing">
+  Save
+  </button>
+
+  <button v-if="isEditing" @click="isEditing = false">Cancel</button>
+</div>
+  <script>
+    // Create a new Vue instance
+      const urlParams = new URLSearchParams(window.location.search);
+      const customerID = urlParams.get('id');
+      console.log("custID"+customerID)
+      const app = Vue.createApp({
+
+        data() {
+
+        return {
+          isEditing:false,
+          customer: [],
+
+        }
+        },
+      mounted() {
+        // Fetch customer data from the Flask API
+        console.log("test1")
+        axios.post('http://localhost:5000/jso/getCustomerDetails',{id: customerID}).then((response) => {
+            //console.log('API Response:', JSON.parse(response));
+            this.customer = JSON.parse(response.data.CustomerDetails);
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+      },
+      methods:{
+        editSave(customerID){
+             //console.log(customerID);
+             console.log(this.customer);
+             axios.post('http://localhost:5000/jso/saveCustomerDetails',{data:this.customer}).then((response) => {
+            //console.log('API Response:', JSON.parse(response));
+            //this.customer = JSON.parse(response.data.CustomerDetails);
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        }
+      }
+    });
+    // Mount the Vue app to the element with id "app"
+    app.mount('#app');
+  </script>
+</body>
+</html>

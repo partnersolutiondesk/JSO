@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include the Vue.js and Axios CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h3 class="p-3 text-center">Vue.js - Display a list of items with v-for</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Account Number</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="customer in customers" :key="customer.id">
+                <td>[[ customer.First_Name ]]</td>
+                <td>[[ customer.Account_ID ]]</td>
+                <td><a href="#" @click="openDetails(customer._id)">View Details</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+  <script>
+    // Create a new Vue instance
+
+      const app = Vue.createApp({
+
+        data() {
+        return {
+          customers: [{"First_Name":"Tome"},{"First_Name":"Jomme"}],
+        }
+        },
+        delimiters : ['[[', ']]'],
+      mounted() {
+        // Fetch customer data from the Flask API
+        console.log("test1")
+        axios.get('http://localhost:5000/jso/getCustomers') // Replace with your API endpoint URL
+          .then((response) => {
+            console.log('API Response:', JSON.parse(response.data.customers));
+            this.customers = JSON.parse(response.data.customers);
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+      },
+      methods:{
+        openDetails(customerID){
+               //console.log(customerID)
+               idObj=customerID;
+               console.log(idObj);
+               console.log(customerID.$oid)
+               //console.log(idObj.$oid)
+               window.location.href="/customerDetails?id="+customerID.$oid
+        }
+      }
+    });
+    // Mount the Vue app to the element with id "app"
+    app.mount('#app');
+  </script>
+</body>
+</html>

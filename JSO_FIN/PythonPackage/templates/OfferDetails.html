@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include the Vue.js and Axios CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h3 class="p-3 text-center">Offer Details</h3>
+    <table>
+
+        <tbody>
+
+
+        <tr> <td>OTP</td>
+              <td> <input type="text" ref="otp" v-model="offer.OTP" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+
+<tr> <td>First Name</td>
+              <td> <input type="text" ref="last_name" v-model="offer.customerDetails.First_Name" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+
+            </tr>
+          <tr> <td>Last Name</td>
+              <td> <input type="text" ref="last_name" v-model="offer.customerDetails.Last_Name" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+        <tr> <td>Amount</td>
+              <td> <input type="text" ref="last_name" v-model="offer.Amount" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+        <tr><td>----------------DEBUG-------------</td></tr>
+        <tr> <td>OTP display only during development</td>
+             <td> <label>[[OTPDisp]] </label></td>
+            </tr>
+        <tr> <td>Role of the current user</td>
+             <td> <label>[[Role]] </label></td>
+            </tr>
+         <tr><td>----------------DEBUG-------------</td></tr>
+          <tr> <td>Address</td>
+              <td> <input type="text" ref="last_name" v-model="offer.customerDetails.Address" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+          <tr> <td>Age</td>
+              <td> <input type="text" ref="last_name" v-model="offer.customerDetails.Age" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+
+                  <tr>
+                <td>Type</td>
+                <td> <input type="text" ref="first_name" v-model="offer.Type" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td></tr>
+               <tr> <td>Status</td>
+              <td> <input type="text" ref="last_name" v-model="offer.Status" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+
+        <tr> <td>Account</td>
+              <td> <input type="text" ref="last_name" v-model="offer.Account_ID" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+       <button @click="isEditing = !isEditing" v-if="!isEditing">
+    Edit
+  </button>&nbsp;
+       <button @click="sendOTP" v-if="!isEditing">
+   Yes, I am interested
+  </button>&nbsp;
+      <button @click="OTPLogin" v-if="OTPSend">
+   Validate OTP
+  </button>&nbsp;
+      <button @click="isEditing = !isEditing" v-if="!isEditing">
+   No, I am not interested
+  </button>
+  <button @click="editSave" v-else-if="isEditing">
+  Save
+  </button>
+
+  <button v-if="isEditing" @click="isEditing = false">Cancel</button>
+</div>
+  <script>
+    // Create a new Vue instance
+      const urlParams = new URLSearchParams(window.location.search);
+      const offerID = urlParams.get('id');
+      console.log("custID"+offerID)
+      const app = Vue.createApp({
+
+        data() {
+
+        return {
+          isEditing:false,
+          offer: {"Type":"Loan"
+          ,"Status":"New",
+          "Account_ID":"23243",
+          "Amount":1000,
+          "OTP":111111,
+          "customerDetails":{
+          "First_Name":"adad",
+          "Last_Name":"kat",
+          "Address": "",
+          "Account_ID": "",
+          "Age":0
+          }
+          },
+
+        }
+        },
+        delimiters : ['[[', ']]'],
+      mounted() {
+        // Fetch customer data from the Flask API
+        console.log("test1")
+        if (offerID != null){
+        axios.post('http://localhost:5000/jso/getOfferDetails',{id: offerID}).then((response) => {
+            //console.log('API Response:', JSON.parse(response));
+            if(response.data.OfferDetails){
+            }
+            //console.log(response.data.OfferDetails.OTP)
+           // console.log(response.data.OfferDetails)
+
+            this.offer = JSON.parse(response.data.OfferDetails);
+            this.OTPDisp =  this.offer.OTP
+            this.offer.OTP=""
+            this.Role=response.data.Role
+            console.log(this.offer)
+            //console.log(this.offer.customerDetails.First_Name)
+            this.isEditing=false;
+            if (this.offer.OTPDisp !=""){
+               this.OTPSend = 1
+               }
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+          }
+      },
+      methods:{
+        editSave(customerID){
+            //if (offerID ==""){
+             axios.post('http://localhost:5000/jso/saveOfferDetails',{data:this.offer}).then((response) => {
+            //console.log('API Response:', JSON.parse(response));
+            //this.customer = JSON.parse(response.data.CustomerDetails);
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        },
+        sendOTP(customerID){
+            //if (offerID ==""){
+             axios.post('http://localhost:5000/jso/sendOTP',{data:this.offer}).then((response) => {
+             console.log(response.data.status)
+             //console.log('API Response:', JSON.parse(response));
+            //this.customer = JSON.parse(response.data.CustomerDetails);
+            this.OTPDisp = response.data.status.otp
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        },
+        OTPLogin(){
+
+             axios.post('http://localhost:5000/jso/OTPlogin',{"otp":this.offer.OTP,"offerID":offerID}).then((response) => {
+             console.log(response)
+             if (response.data.status == "FAIL"){
+              alert("OTP Validation Failed")
+              this.OTPVALIDATION=false;
+             }
+             else if  (response.data.status == "PASS"){
+              alert("OTP Validation pass");
+              this.OTPVALIDATION=true;
+             }
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        }
+
+
+      }
+    });
+    // Mount the Vue app to the element with id "app"
+    app.mount('#app');
+  </script>
+</body>
+</html>

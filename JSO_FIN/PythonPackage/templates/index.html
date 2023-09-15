@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue.js Ajax Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="fetchData">Fetch Data</button>
+        <div v-if="data">
+            <h2>Data from Flask API:</h2>
+            <pre>{{ data }}</pre>
+        </div>
+        <table>
+        <tbody>
+        <tr v-for="customer in customers" :key="customer.Account_ID">
+          <td>{{ customer.First_Name }}</td>
+          <td>{{ customer.Last_Name }}</td>
+          <td>{{ customer.Address }}</td>
+          <td>{{ customer.Account_ID }}</td>
+          <td>{{ customer.Age }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                customers: []
+            },
+            methods: {
+                fetchData() {
+                    fetch('/getCustomers')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.data = data.customers;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                        });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
