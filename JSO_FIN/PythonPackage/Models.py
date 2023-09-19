@@ -23,7 +23,28 @@ customer_model = api.model('Customer', {
     'Last_Name': fields.String(description='Last Name'),
     'Address': fields.String(description='Address'),
     'Account_ID': fields.String(description='Account ID'),
-    'Age': fields.String(description='Age')
+    'Age': fields.String(description='Age'),
+
+    'DOB': fields.String(description='DOB'),
+
+    'Pincode': fields.String(description='Pincode'),
+
+    'Profession': fields.String(description='Profession'),
+
+    'credit_score': fields.Integer(description='credit score'),
+
+    'Income_source': fields.String(description='Income source'),
+
+    'Industry_Sector': fields.String(description='Industry Sector'),
+
+    'Income_range': fields.Integer(description='Income range'),
+
+    'Payslip': fields.String(description='Payslip'),
+
+    'IT_return': fields.String(description='IT return'),
+
+    'AML': fields.String(description='AML')
+
 })
 
 # master

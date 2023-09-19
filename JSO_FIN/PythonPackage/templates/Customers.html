@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="customer in customers" :key="customer.id">
+            <tr v-for="customer in customers" :key="customer._id">
                 <td>[[ customer.First_Name ]]</td>
                 <td>[[ customer.Account_ID ]]</td>
                 <td><a href="#" @click="openDetails(customer._id)">View Details</a></td>
@@ -52,9 +52,9 @@
         openDetails(customerID){
                //console.log(customerID)
                idObj=customerID;
-               console.log(idObj);
-               console.log(customerID.$oid)
-               //console.log(idObj.$oid)
+               //console.log(idObj);
+               //console.log(customerID.$oid)
+               console.log(idObj.$oid)
                window.location.href="/customerDetails?id="+customerID.$oid
         }
       }
