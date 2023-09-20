@@ -68,7 +68,7 @@
        <button @click="isEditing = !isEditing" v-if="!isEditing">
     Edit
   </button>&nbsp;
-       <button @click="sendOTP" v-if="!isEditing">
+       <button @click="ProceedWithOffer" v-if="!isEditing">
    Yes, I am interested
   </button>&nbsp;
       <button @click="OTPLogin" v-if="OTPSend">
@@ -163,6 +163,21 @@
             console.error('Error fetching customer data:', error);
           });
         },
+           ProceedWithOffer(){
+            axios.post('http://localhost:5000/jso/ProceedWithOffer',{"offerID":offerID}).then((response) => {
+             console.log(response)
+             if (response.data.status == "FAIL"){
+              alert("something went wrong!")
+             }
+             else if  (response.data.status == "Thanks for choosing the offer. You will get a notification soon"){
+              alert("Thank you for selecting this offer. You will receive an OTP shortly. Please input the OTP here to continue.");
+             }
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+         },
         OTPLogin(){
 
              axios.post('http://localhost:5000/jso/OTPlogin',{"otp":this.offer.OTP,"offerID":offerID}).then((response) => {
