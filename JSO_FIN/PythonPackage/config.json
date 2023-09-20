@@ -1,0 +1,11 @@
+{
+ "ControlRoomUrl" : "https://aa-se-ind-5.my.automationanywhere.digital",
+  "username" : "sikha.p@automationanywhere.com",
+  "password" : "psdpassword",
+  "SendOTPBot" : "305854",
+  "TriggerLoanProcessBot" : "306068",
+  "poolIds" : ["262"],
+  "runAsUserIds" : ["1052"],
+  "deviceUsageType" : "PREFER_DEFAULT_DEVICE",
+  "logFilePath" : "C:/Users/Sikha.P/OneDrive - Automation Anywhere Software Private Limited/Pictures/New Text Document (2).txt"
+}
