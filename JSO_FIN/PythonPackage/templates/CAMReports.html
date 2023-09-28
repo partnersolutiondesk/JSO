@@ -24,20 +24,22 @@
 </head>
 <body>
   <div id="app">
-    <h3 class="p-3 text-center">AuditTrails</h3>
+    <h3 class="p-3 text-center">CAM Reports</h3>
     <table>
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Description</th>
+                <th>Reported Date</th>
+                <th>Reported Prepared By</th>
+                <th>Offer ID</th>
+                <th>Report JSON</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="audit in audittrails" :key="audit._id">
-                <td>[[ audit.Date.$date ]]</td>
-                <td>[[ audit.Type ]]</td>
-                 <td>[[ audit.Description ]]</td>
+            <tr v-for="report in camreports" :key="report._id">
+                <td>[[ report.reportedDate ]]</td>
+                <td>[[ report.reportPreparedBy ]]</td>
+                 <td>[[ report.OfferID ]]</td>
+                <td>[[ report.reportJSON ]]</td>
             </tr>
         </tbody>
     </table>
@@ -49,17 +51,17 @@
 
         data() {
         return {
-          audittrails: [],
+          camreports: [],
         }
         },
 
         delimiters : ['[[', ']]'],
       mounted() {
         // Fetch audit trail data from the Flask API
-        axios.get('http://localhost:5000/jso/getAudittrails')
+        axios.get('http://localhost:5000/jso/getCAMReports')
           .then((response) => {
-            console.log('API Response:', JSON.parse(response.data.audittrails));
-            this.audittrails = JSON.parse(response.data.audittrails);
+            console.log('API Response:', JSON.parse(response.data.camreports));
+            this.camreports = JSON.parse(response.data.camreports);
           })
           .catch((error) => {
             console.error('Error fetching customer data:', error);

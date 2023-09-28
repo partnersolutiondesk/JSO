@@ -1,0 +1,13 @@
+- audit history summary for an offer using GenAI
+- Wrap the UI in a free bank webiste template
+- Read CIBIL Score from the document . Syed is ready with th LI . it is in another CR -
+- Change scoring engine logic as per the latest requirement
+- CAM Report table date is coming as strnig. change it to date
+-
+
+- Login  - cutomer /banker views based on the role
+
+
+
+- Theme
+-

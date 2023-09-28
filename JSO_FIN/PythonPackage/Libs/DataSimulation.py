@@ -3,7 +3,9 @@ from faker import Faker
 fake = Faker()
 from random import choice
 import datetime
-
+#http://localhost:5000/customerDetails?id=65098096d39f0b42d57ab8a8
+#http://localhost:5000/offerDetails?id=6509813dd39f0b42d57ab96f
+#http://localhost:5000/
 # Function to generate fake customer data
 def generate_fake_customer():
     answer = choice(['yes', 'no'])
@@ -20,6 +22,8 @@ def generate_fake_customer():
         #"Account_ID": fake.uuid4(),
         "Account_ID": str(fake.random_int(min=1000000000, max=9999999999)),
         "Age": fake.random_int(min=18, max=60),
+        "Email": fake.email(),
+        "Phone_Number": fake.phone_number(),
         #'DOB':  fake.date_between(start_date="-60y", end_date="now"),
         'DOB': dob,
         'Pincode': fake.zipcode(),
