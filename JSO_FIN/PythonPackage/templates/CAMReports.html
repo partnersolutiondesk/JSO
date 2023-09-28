@@ -4,7 +4,7 @@
   <!-- Include the Vue.js and Axios CDN -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-     <style>
+    <style>
         table {
             width: 100%;
             border-collapse: collapse;
@@ -24,25 +24,22 @@
 </head>
 <body>
   <div id="app">
-    <h3 class="p-3 text-center">Offers</h3>
+    <h3 class="p-3 text-center">CAM Reports</h3>
     <table>
         <thead>
             <tr>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Account</th>
-                <th>Amount</th>
-                <th>OTP</th>
+                <th>Reported Date</th>
+                <th>Reported Prepared By</th>
+                <th>Offer ID</th>
+                <th>Report JSON</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="offer in offers" :key="offer.id">
-                <td>[[ offer.Type ]]</td>
-                <td>[[ offer.Status ]]</td>
-                 <td>[[ offer.Account_ID ]]</td>
-                <td>[[ offer.Amount ]]</td>
-                <td>[[ offer.OTP ]]</td>
-                <td><a href="#" @click="openDetails(offer._id)">View Details</a></td>
+            <tr v-for="report in camreports" :key="report._id">
+                <td>[[ report.reportedDate ]]</td>
+                <td>[[ report.reportPreparedBy ]]</td>
+                 <td>[[ report.OfferID ]]</td>
+                <td>[[ report.reportJSON ]]</td>
             </tr>
         </tbody>
     </table>
@@ -54,32 +51,23 @@
 
         data() {
         return {
-          offers: [{"First_Name":"Tome"},{"First_Name":"Jomme"}],
+          camreports: [],
         }
         },
 
         delimiters : ['[[', ']]'],
       mounted() {
-        // Fetch customer data from the Flask API
-        console.log("test1")
-        axios.get('http://localhost:5000/jso/getOffers') // Replace with your API endpoint URL
+        // Fetch audit trail data from the Flask API
+        axios.get('http://localhost:5000/jso/getCAMReports')
           .then((response) => {
-            console.log('API Response:', JSON.parse(response.data.offers));
-            this.offers = JSON.parse(response.data.offers);
+            console.log('API Response:', JSON.parse(response.data.camreports));
+            this.camreports = JSON.parse(response.data.camreports);
           })
           .catch((error) => {
             console.error('Error fetching customer data:', error);
           });
       },
       methods:{
-        openDetails(customerID){
-               //console.log(customerID)
-               idObj=customerID;
-               console.log(idObj);
-               console.log(customerID.$oid)
-               //console.log(idObj.$oid)
-               window.location.href="/offerDetails?id="+customerID.$oid
-        }
       }
     });
     // Mount the Vue app to the element with id "app"

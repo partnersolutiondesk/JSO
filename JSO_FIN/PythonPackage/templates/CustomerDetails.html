@@ -19,8 +19,18 @@
               <td> <input type="text" ref="last_name" v-model="customer.Last_Name" :disabled="!isEditing"
            :class="{view: !isEditing}"></td>
             </tr>
+<!--
         <tr> <td>DOB</td>
               <td> <input type="text" ref="last_name" v-model="customer.DOB" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr> -->
+              <tr> <td>Phone Number</td>
+              <td> <input type="text" ref="last_name" v-model="customer.Phone_Number" :disabled="!isEditing"
+           :class="{view: !isEditing}"></td>
+            </tr>
+
+              <tr> <td>Email</td>
+              <td> <input type="text" ref="last_name" v-model="customer.Email" :disabled="!isEditing"
            :class="{view: !isEditing}"></td>
             </tr>
         <tr> <td>Pincode</td>
@@ -91,14 +101,21 @@
         console.log("test1")
         axios.post('http://localhost:5000/jso/getCustomerDetails',{id: customerID}).then((response) => {
             val=JSON.parse(response.data.CustomerDetails)
-            console.log(val.DOB.$date.$numberLong)
-            // Convert $numberLong to JavaScript Date object
-            var date = new Date(parseInt(val.DOB.$date.$numberLong));
 
+
+            //*************************************
+            //commented by sikha
+            // Convert $numberLong to JavaScript Date object
+            // console.log(val.DOB.$date.$numberLong)
+            //var date = new Date(parseInt(val.DOB.$date.$numberLong));
              // Format the date as a string (e.g., "YYYY-MM-DD HH:mm:ss")
-            var formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
-            console.log(formattedDate)
-            val.DOB=formattedDate
+            //var formattedDate = date.toISOString().slice(0, 19).replace("T", " ");
+            //console.log(formattedDate)
+           // val.DOB=formattedDate
+            //commented part - end
+         //*************************************
+
+
             this.customer = val;
             console.log('API Response:', this.customer);
             this.isEditing=false;

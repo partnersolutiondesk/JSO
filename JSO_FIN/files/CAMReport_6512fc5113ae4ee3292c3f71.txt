@@ -1,0 +1,22 @@
+{
+    "ReportedDate": "2023-09-27 07:27:55.318317",
+    "ReportPreparedBy": "System",
+    "CustomerName": "Lisa Lynch",
+    "ExecutiveSummary": "This report provides an overview of the financial relationship with the salaried individual customer. The report covers key customer information, account details, and a summary of the customer's financial status.",
+    "CustomerID": "8425919344",
+    "DateOfBirth": "1991-09-07 04:48:26.910000",
+    "ContactNumber": "+918157897518",
+    "EmailAddress": "psdaa48@gmail.com",
+    "PermanentAddress": "370 Justin Stravenue\nEast Travismouth, MS 83733",
+    "EmploymentStatus": "Salaried",
+    "EmployerName": "Automation Anywhere",
+    "MonthlySalary": "10000",
+    "CurrentOutstandingBalance": "10000",
+    "LoanOrEMIDetails": "",
+    "LoanType": "HomeLoan",
+    "LoanAmount": 1000,
+    "InterestRate": 7,
+    "EMIAmount": 1200,
+    "LoanTenure": 36,
+    "CreditScore": 193
+}
