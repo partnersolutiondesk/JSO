@@ -3,6 +3,7 @@
 - Read CIBIL Score from the document . Syed is ready with th LI . it is in another CR -
 - Change scoring engine logic as per the latest requirement
 - CAM Report table date is coming as strnig. change it to date
+- Check twilio voice call
 -
 
 - Login  - cutomer /banker views based on the role
@@ -10,4 +11,11 @@
 
 
 - Theme
--
+- Annual Revenue -get it from ITR document
+- DR RATIO - 20% of Annual Revenue -
+- RH - Prasad will get back
+
+
+- https://aa-se-ind-5.my.automationanywhere.digital/#/bots/repository/private/folders/305888
+
+sikha.creator/psdpassword

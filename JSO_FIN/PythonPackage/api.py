@@ -95,7 +95,7 @@ class OTPLogin(Resource):
             baseUrl = serverConfig['scheme'] + "://" + serverConfig['host'] + ":" + serverConfig['port']
             deployTriggerLoanProcessBot(offerID, customerObjID, baseUrl + "/jso/getCustomerDetailsv2",
                                         baseUrl + "/jso/acceptOffer/" + offerID,
-                                        baseUrl + "/jso/rejectOffer/" + offerID)
+                                        baseUrl + "/jso/rejectOffer/" + offerID, baseUrl + "/jso/saveCustomerDetailsV2")
             return {'status': 'PASS', 'access_token': access_token}, 200
         else:
             return {'status': 'FAIL', 'message': 'Invalid credentials'}, 200
@@ -282,10 +282,8 @@ class ProceedWithOffer(Resource):
         otp = offer_data['OTP']
         print("before deploy")
         customer_data = db["customers"].find_one({'Account_ID': offer_data['Account_ID']})
-
-        # deploySendOTPBot(offer_data['customerDetails'][', otp, "psdaa48@gmail.com")
-        # deploySendOTPBot("+918157897518", otp, "psdaa48@gmail.com")
-        deploySendOTPBot(customer_data['Phone_Number'], otp, customer_data['Email'])
+        #comnted for testing purpose
+       # deploySendOTPBot(customer_data['Phone_Number'], otp, customer_data['Email'])
 
         # Update offer status as "INTERESTED" "30"
         # offer_data['Status'] = "30"
@@ -568,6 +566,57 @@ def generateCAMReport(offer_data, customer_data):
     return "done"
 
 
+@ns.route('/AudittrailSummary')
+class AudittrailSummary(Resource):
+    # @api.expect(user_model, validate=True)
+    def post(self):
+        data = request.get_json()
+        offerID = data['id']
+        api_url = config_data['ControlRoomUrl'] + "/v4/automations/deploy"
+        input_data = {
+            "botId": config_data['SendOTPBot'],
+            "botInput": {
+                "offerID": {
+                    "type": "STRING",
+                    "string": offerID
+                },
+                "offerID": {
+                    "type": "STRING",
+                    "string": offerID
+                }
+
+            },
+            "automationPriority": "PRIORITY_MEDIUM",
+            "unattendedRequest": {
+                "runAsUserIds": config_data['runAsUserIds'],
+                "poolIds": config_data['poolIds'],
+                "numOfRunAsUsersToUse": 0,
+                "deviceUsageType": config_data['deviceUsageType']
+            }
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "accept": "*/*",
+            "X-Authorization": Authentication()
+        }
+
+        # Send a POST request to the API with input data and headers
+        response = requests.post(api_url, json=input_data, headers=headers)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Parse and use the response data (assuming it's in JSON format)
+            data = response.json()
+            print("API Response:")
+            print(data)
+            return data
+        else:
+            print(f"API request failed with status code {response.status_code}")
+            return "API request failed with status code "
+        # print(f"API request failed: {e}")
+
+
+
 @ns.route('/reviewOfferStatus/<string:id>/<string:status>')
 class ReviewOfferStatus(Resource):
     def get(self, id, status):
@@ -714,6 +763,37 @@ class postCustomerDetails(Resource):
         customer_collection = db["customers"]
         del reqdata['data']['_id']
         result = customer_collection.update_one({'_id': ObjectId(custID)}, {"$set": reqdata['data']})
+        # print(customer_data)
+        if result.matched_count > 0:
+            # list_cur = list(customer_data)
+            # res= dumps(customer_data, indent=2)
+            return {'status': "updated"}, 200  # mongo collection updated
+        else:
+            return {'status': 'Customer Details update Failed'}, 401
+
+
+@ns.route('/saveCustomerDetailsV2')
+class postCustomerDetails(Resource):
+    # @api.expect(customer_model, validate=True)
+    def post(self):
+        reqdata = request.get_json()
+        print("inside saveCustomerDetailsV2")
+        print(reqdata)
+        offerID = reqdata['offerID']
+
+        offer_collection = db["offers"]
+        customer_collection = db["customers"]
+        offer_data = offer_collection.find_one({'_id': ObjectId(offerID)})
+        print(offer_data)
+        print(offer_data['Account_ID'])
+        customer_data = customer_collection.find_one({'Account_ID': offer_data['Account_ID']})
+        print(str(customer_data['_id']))
+        custID = str(customer_data['_id'])
+
+        del reqdata['offerID']
+        print("asdasd")
+        print(reqdata)
+        result = customer_collection.update_one({'_id': ObjectId(custID)}, {"$set": reqdata})
         # print(customer_data)
         if result.matched_count > 0:
             # list_cur = list(customer_data)
@@ -889,14 +969,9 @@ def read_config(file_path):
 config_data = read_config("config.json")
 
 print(config_data)
-#config_data = read_config(
- #   r"C:\Users\Sikha.P\OneDrive - Automation Anywhere Software Private Limited\AA_SIKHA\AA_SIKHA\PROJECTS\JSO\BackEnd\Git\JSO\JSO_FIN\PythonPackage\config.json")
-
 
 def Authentication():
     # function body
-    print(config_data)
-    print(config_data['ControlRoomUrl'])
     api_url = config_data['ControlRoomUrl'] + "/v1/authentication"
     input_data = {
         "username": config_data['username'],
@@ -978,7 +1053,7 @@ def deploySendOTPBot(mobileNumber, otp, toAddress):
 
 
 def deployTriggerLoanProcessBot(offerID, customerObjID, getCustomerDetailsAPIUrl, acceptOfferAPIUrl,
-                                rejectOfferAPIUrl):
+                                rejectOfferAPIUrl,updateCustomerDetailsAPIUrl):
     # function body
     print(config_data['ControlRoomUrl'])
     api_url = config_data['ControlRoomUrl'] + "/v4/automations/deploy"
@@ -1004,7 +1079,36 @@ def deployTriggerLoanProcessBot(offerID, customerObjID, getCustomerDetailsAPIUrl
             "rejectOfferAPIUrl": {
                 "type": "STRING",
                 "string": rejectOfferAPIUrl
+            },
+            "ScoringEngineTemplateFilepath": {
+                "type": "STRING",
+                "string": config_data['ScoringEngineTemplateFilepath']
+            },
+            "CIBILDocumentFilePath": {
+                "type": "STRING",
+                "string": config_data['CIBILDocumentFilePath']
+            },
+            "ITRDocumentFilePath": {
+                "type": "STRING",
+                "string": config_data['ITRDocumentFilePath']
+            },
+            "OutputFolderPath": {
+                "type": "STRING",
+                "string": config_data['OutputFolderPath']
+            },
+            "CIBILDocFileName": {
+                "type": "STRING",
+                "string": config_data['CIBILDocFileName']
+            },
+            "ITRDocFileName": {
+                "type": "STRING",
+                "string": config_data['ITRDocFileName']
+            },
+            "UpdateCustomerDetailsAPIUrl": {
+                "type": "STRING",
+                "string": updateCustomerDetailsAPIUrl
             }
+
         },
         "automationPriority": "PRIORITY_MEDIUM",
         "unattendedRequest": {

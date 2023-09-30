@@ -84,11 +84,23 @@
   <button v-if="isEditing" @click="isEditing = false">Cancel</button>
 
 
-      <table height="200">
+      <table height="100">
         <tbody>
          <tr><td>----------------EXCEPTIONAL CASES-------------</td></tr>
          <tr><td>
                 <button @click="NoActionMidWayReminder" v-else-if="isEditing">No action/Mid way - Reminder</button>
+         </td></tr>
+
+
+        </tbody>
+      </table>
+
+
+        <table height="100">
+        <tbody>
+         <tr><td>----------------AUDIT TRAIL SUMMARY-------------</td></tr>
+         <tr><td>
+                <button @click="auditTrailSummary" v-else-if="isEditing">Audit Trail Summary</button>
          </td></tr>
 
 
@@ -162,6 +174,10 @@
           .catch((error) => {
             console.error('Error fetching customer data:', error);
           });
+        },
+        auditTrailSummary(){
+             axios.post('http://localhost:5000/jso/DeployNoActionOrMidwayMail',{type: "midway",inputs : "Offer Status :  "+offerDetails.StatusText +", LastModified : "+offerDetails.LastModified.$date + ", CreatedOn : "+offerDetails.CreatedOn.$date+ ", ValidityInDays : "+offerDetails.ValidityInDays  }).then((response) => {
+                 });
         },
         NoActionMidWayReminder(){
          axios.post('http://localhost:5000/jso/getOfferStatus',{id: offerID}).then((response) => {
