@@ -441,7 +441,6 @@
                     <button @click="sendOffer" v-if="!isEditing">Send Offer</button>
                     <button v-if="isEditing" @click="isEditing = false">Cancel</button>
                 </div>
-
                 <section class="site-section border-bottom bg-light" id="offer-Section">
                     <div class="container">
                         <div v-if="showOffers">
@@ -463,15 +462,131 @@
                                     <td>[[ offer.Account_ID ]]</td>
                                     <td>[[ offer.Amount ]]</td>
                                     <td>[[ offer.OTP ]]</td>
-                                    <td><a href="#" @click="openDetails(offer._id)">View Details</a></td>
+                                    <td><a @click="openOfferDetails(offer._id)">View Details</a></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
+                <section class="site-section border-bottom bg-light" id="offerDetails-Section">
+                    <div v-if="showOfferDetails" id="offerDetails">
+                        <h3 class="p-3 text-center">Offer Details</h3>
+                        <table>
+
+                            <tbody>
 
 
+                            <tr>
+                                <td>OTP</td>
+                                <td><input type="text" ref="otp" v-model="offer.OTP" :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+
+                            <tr>
+                                <td>First Name</td>
+                                <td><input type="text" ref="last_name" v-model="offer.customerDetails.First_Name"
+                                           :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td><input type="text" ref="last_name" v-model="offer.customerDetails.Last_Name"
+                                           :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+                            <tr>
+                                <td>Amount</td>
+                                <td><input type="text" ref="last_name" v-model="offer.Amount" :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+                            <tr>
+                                <td>----------------DEBUG-------------</td>
+                            </tr>
+                            <tr>
+                                <td>OTP display only during development</td>
+                                <td><label>[[OTPDisp]] </label></td>
+                            </tr>
+                            <tr>
+                                <td>Role of the current user</td>
+                                <td><label>[[Role]] </label></td>
+                            </tr>
+                            <tr>
+                                <td>----------------DEBUG-------------</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td><input type="text" ref="last_name" v-model="offer.customerDetails.Address"
+                                           :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+                            <tr>
+                                <td>Age</td>
+                                <td><input type="text" ref="last_name" v-model="offer.customerDetails.Age"
+                                           :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+
+                            <tr>
+                                <td>Type</td>
+                                <td><input type="text" ref="first_name" v-model="offer.Type" :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td><input type="text" ref="last_name" v-model="offer.Status" :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+
+                            <tr>
+                                <td>Account</td>
+                                <td><input type="text" ref="last_name" v-model="offer.Account_ID" :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                        <button @click="isEditing = !isEditing" v-if="!isEditing">Edit</button>&nbsp;
+                        <button @click="ProceedWithOffer" v-if="!isEditing">Yes, I am interested</button>&nbsp;
+                        <button @click="OTPLogin" v-if="OTPSend">Validate OTP</button>&nbsp;
+                        <button @click="NotInterested" v-if="!isEditing">No, I am not interested</button>
+                        <button @click="offerSave1" v-else-if="isEditing">Save</button>
+                        <button v-if="isEditing" @click="isEditing = false">Cancel</button>
+                        <table height="100">
+                            <tbody>
+                            <tr>
+                                <td>----------------EXCEPTIONAL CASES-------------</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button @click="NoActionMidWayReminder" v-else-if="isEditing">No action/Mid way
+                                        -Reminder
+                                    </button>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                        <table height="100">
+                            <tbody>
+                            <tr>
+                                <td>----------------AUDIT TRAIL SUMMARY-------------</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button @click="auditTrailSummary" v-else-if="isEditing">Audit Trail Summary
+                                    </button>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
                 <section class="site-section border-bottom bg-light" id="audit-section">
                     <div v-if="showAudits" class="container">
                         <h3 class="p-3 text-center">AuditTrails</h3>
@@ -493,7 +608,6 @@
                         </table>
                     </div>
                 </section>
-
                 <section class="site-section border-bottom bg-light" id="cam-section">
                     <div v-if="showCams" class="container">
 

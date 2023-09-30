@@ -36,6 +36,107 @@ console.log(params)
           });
 }
 
+ function offerSave2(offer){
+            //if (offerID ==""){
+            console.log(offer)
+            console.log(app.offer)
+             axios.post('http://localhost:5000/jso/saveOfferDetails',{data:offer}).then((response) => {
+            //console.log('API Response:', JSON.parse(response));
+            //this.customer = JSON.parse(response.data.CustomerDetails);
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        }
+ function auditTrailSummary(){
+             axios.post('http://localhost:5000/jso/DeployNoActionOrMidwayMail',{type: "midway",inputs : "Offer Status :  "+offerDetails.StatusText +", LastModified : "+offerDetails.LastModified.$date + ", CreatedOn : "+offerDetails.CreatedOn.$date+ ", ValidityInDays : "+offerDetails.ValidityInDays  }).then((response) => {
+                 });
+        }
+ function NoActionMidWayReminder(){
+         axios.post('http://localhost:5000/jso/getOfferStatus',{id: offerID}).then((response) => {
+             console.log(response)
+            //compare the Dates
+            console.log(JSON.parse(response.data.offerDetails).Status)
+            offerDetails = JSON.parse(response.data.offerDetails)
+            if(offerDetails.Status < 80 && offerDetails.Status > 20){
+                alert("This offer left mid-way by the customer. \n \n  Please find the offer Details below,\n Offer Status :  "+offerDetails.StatusText +", \n LastModified : "+offerDetails.LastModified.$date + ", \n CreatedOn : "+offerDetails.CreatedOn.$date+ ", \n ValidityInDays : "+offerDetails.ValidityInDays + "\n \n Please check your email for the sample Email")
+                 axios.post('http://localhost:5000/jso/DeployNoActionOrMidwayMail',{type: "midway",inputs : "Offer Status :  "+offerDetails.StatusText +", LastModified : "+offerDetails.LastModified.$date + ", CreatedOn : "+offerDetails.CreatedOn.$date+ ", ValidityInDays : "+offerDetails.ValidityInDays  }).then((response) => {
+                 });
+            }
+             if(offerDetails.Status < 30){
+                alert("No action on this offer by the customer. \n \n Please find the offer Details below,\n Offer Status :  "+offerDetails.StatusText +", \n LastModified : "+offerDetails.LastModified.$date + ", \n CreatedOn : "+offerDetails.CreatedOn.$date+ ", \n ValidityInDays : "+offerDetails.ValidityInDays + "\n \n Please check your email for the sample Email")
+                 axios.post('http://localhost:5000/jso/DeployNoActionOrMidwayMail',{type: "noaction", inputs : "Offer Status :  "+offerDetails.StatusText +", LastModified : "+offerDetails.LastModified.$date + ", CreatedOn : "+offerDetails.CreatedOn.$date+ ", ValidityInDays : "+offerDetails.ValidityInDays}).then((response) => {
+                 });
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+
+        }
+ function sendOTP(customerID){
+            //if (offerID ==""){
+             axios.post('http://localhost:5000/jso/sendOTP',{data:this.offer}).then((response) => {
+             console.log(response.data.status)
+             //console.log('API Response:', JSON.parse(response));
+            //this.customer = JSON.parse(response.data.CustomerDetails);
+            this.OTPDisp = response.data.status.otp
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        }
+ function ProceedWithOffer(){
+            axios.post('http://localhost:5000/jso/ProceedWithOffer',{"offerID":offerID}).then((response) => {
+             console.log(response)
+             if (response.data.status == "FAIL"){
+              alert("something went wrong!")
+             }
+             else if  (response.data.status == "Thanks for choosing the offer. You will get a notification soon"){
+              alert("Thank you for selecting this offer. You will receive an OTP shortly. Please input the OTP here to continue.");
+             }
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+         }
+ function NotInterested(){
+            axios.post('http://localhost:5000/jso/NotInterested',{"offerID":offerID}).then((response) => {
+             console.log(response)
+             if (response.data.status == "FAIL"){
+              alert("something went wrong!")
+             }
+             else if  (response.data.status == "Thanks for your update"){
+              alert(response.data.status);
+             }
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+         }
+ function OTPLogin(){
+
+             axios.post('http://localhost:5000/jso/OTPlogin',{"otp":this.offer.OTP,"offerID":offerID}).then((response) => {
+             console.log(response)
+             if (response.data.status == "FAIL"){
+              alert("OTP Validation Failed")
+              this.OTPVALIDATION=false;
+             }
+             else if  (response.data.status == "PASS"){
+              alert("OTP verified. You will get the email shortly with more details.");
+              this.OTPVALIDATION=true;
+             }
+            this.isEditing=false;
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+        }
+
 
      // Get the hash portion of the URL
         var hash = window.location.hash;
@@ -49,12 +150,26 @@ console.log(params)
            customer: [],
            audittrails: [],
            camreports: [],
+           offer: {"Type":"Loan"
+          ,"Status":"New",
+          "Account_ID":"23243",
+          "Amount":1000,
+          "OTP":111111,
+          "customerDetails":{
+          "First_Name":"adad",
+          "Last_Name":"kat",
+          "Address": "",
+          "Account_ID": "",
+          "Age":0
+          }
+          },
           showCustDetails:false,
           showCustomers:true,
           isEditing:false,
           showOffers:false,
           showAudits:false,
           showCams:false,
+          showOfferDetails:false
 
         }
         },
@@ -89,8 +204,9 @@ console.log(params)
           });
         }
         else if ( hash === "#customerDetails-Section") {
-             this.showCustomers = false;
-           this.showCustDetails = true;
+             app.showCustomers = false;
+           app.showCustDetails = true;
+           app.offerDetails=true
             console.log("Hash changed to: " + hash);
             getCustomerDetails()
               .then(data => {
@@ -110,6 +226,7 @@ console.log(params)
           app.showCustDetails=false,
           app.showCustomers=false,
           app.isEditing=false
+          app.offerDetails=true
            axios.get('http://localhost:5000/jso/getOffers') // Replace with your API endpoint URL
           .then((response) => {
             console.log('API Response:', JSON.parse(response.data.offers));
@@ -125,7 +242,8 @@ console.log(params)
           app.showCams=false;
            app.showCustDetails=false,
           app.showCustomers=false,
-          app.isEditing=false
+          app.isEditing=false,
+          app.offerDetails=true
           axios.get('http://localhost:5000/jso/getAudittrails')
           .then((response) => {
             console.log('API Response:', JSON.parse(response.data.audittrails));
@@ -139,19 +257,58 @@ console.log(params)
           app.showOffers=false;
           app.showAudits=false;
           app.showCams=true;
-           app.showCustDetails=false,
-          app.showCustomers=false,
-          app.isEditing=false
+           app.showCustDetails=false;
+          app.showCustomers=false;
+          app.isEditing=false;
+          app.offerDetails=true;
           axios.get('http://localhost:5000/jso/getCAMReports')
           .then((response) => {
             console.log('API Response:', JSON.parse(response.data.camreports));
-            this.camreports = JSON.parse(response.data.camreports);
+            app.camreports = JSON.parse(response.data.camreports);
           })
           .catch((error) => {
             console.error('Error fetching customer data:', error);
           });
         }
 
+         else if ( hash === "#offerDetails-Section") {
+          //const urlParams = new URLSearchParams(window.location.search);
+          //const offerID = urlParams.get('id');
+          url=window.location.href
+          const [hash, query] = url.split('#')[1].split('?')
+          const params = Object.fromEntries(new URLSearchParams(query))
+          const offerID=params.id
+          app.showOffers=false;
+          app.showAudits=false;
+          app.showCams=false;
+           app.showCustDetails=false;
+          app.showCustomers=false;
+          app.isEditing=false;
+          app.showOfferDetails=true;
+           if (offerID != null){
+        axios.post('http://localhost:5000/jso/getOfferDetails',{id: offerID}).then((response) => {
+            //console.log('API Response:', JSON.parse(response));
+            if(response.data.OfferDetails){
+            }
+            //console.log(response.data.OfferDetails.OTP)
+           // console.log(response.data.OfferDetails)
+
+            app.offer = JSON.parse(response.data.OfferDetails);
+            app.OTPDisp =  app.offer.OTP
+            app.offer.OTP=""
+            app.Role=response.data.Role
+            console.log(app.offer)
+            //console.log(this.offer.customerDetails.First_Name)
+            app.isEditing=false;
+            if (app.offer.OTPDisp !=""){
+               app.OTPSend = 1
+               }
+          })
+          .catch((error) => {
+            console.error('Error fetching customer data:', error);
+          });
+          }
+      }
 
 
 }
@@ -163,16 +320,29 @@ console.log(params)
 
       },
       methods:{
+       offerSave1(){
+       console.log(this.offer)
+          offerSave2(this.offer)
+
+       },
         openDetails(customerID){
                //console.log(customerID)
                this.showCustomers = false;
                this.showCustDetails = true;
                idObj=customerID;
-               //console.log(idObj);
-               //console.log(customerID.$oid)
+
                console.log(idObj.$oid)
                //window.location.href="/customerDetails?id="+customerID.$oid
               window.location.hash = "#customerDetails-Section?id="+customerID.$oid;
+        },
+        openOfferDetails(offerID){
+               //console.log(customerID)
+               //idObj=customerID;
+               //console.log(idObj);
+               //console.log(customerID.$oid)
+               //console.log(idObj.$oid)
+               //window.location.href="/offerDetails?id="+offerID.$oid
+                window.location.hash = "#offerDetails-Section?id="+offerID.$oid;
         },
         extractOid(idObj) {
       if (idObj && idObj["$oid"]) {
