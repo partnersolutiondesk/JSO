@@ -148,6 +148,11 @@ def static_page():
     return render_template('./index.html')
 
 
+# Route to serve Customer Details
+@app.route('/home')
+def homepage_view():
+    return render_template('./index.html')
+
 # Route to serve a customer View
 @app.route('/customers')
 def customer_view():

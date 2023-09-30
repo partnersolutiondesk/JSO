@@ -1,47 +1,756 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Vue.js Ajax Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <!-- Include the Vue.js and Axios CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Acme Bank</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="./static/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/jquery-ui.css">
+    <link rel="stylesheet" href="./static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="./static/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="./static/css/jquery.fancybox.min.css">
+
+    <link rel="stylesheet" href="./static/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="./static/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="./static/css/aos.css">
+
+    <link rel="stylesheet" href="./static/css/style.css">
+
 </head>
-<body>
-    <div id="app">
-        <button @click="fetchData">Fetch Data</button>
-        <div v-if="data">
-            <h2>Data from Flask API:</h2>
-            <pre>{{ data }}</pre>
-        </div>
-        <table>
-        <tbody>
-        <tr v-for="customer in customers" :key="customer.Account_ID">
-          <td>{{ customer.First_Name }}</td>
-          <td>{{ customer.Last_Name }}</td>
-          <td>{{ customer.Address }}</td>
-          <td>{{ customer.Account_ID }}</td>
-          <td>{{ customer.Age }}</td>
-        </tr>
-      </tbody>
-    </table>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
+<div id="overlayer"></div>
+<div class="loader">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
     </div>
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                customers: []
-            },
-            methods: {
-                fetchData() {
-                    fetch('/getCustomers')
-                        .then(response => response.json())
-                        .then(data => {
-                            this.data = data.customers;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data:', error);
-                        });
-                }
-            }
-        });
-    </script>
+</div>
+
+
+<div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+
+
+    <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-6 col-xl-2">
+                    <h1 class="mb-0 site-logo"><a href="index.html" class="h2 mb-0">Acme&nbsp;Bank<span
+                            class="text-primary">.</span> </a></h1>
+                </div>
+
+                <div class="col-12 col-md-10 d-none d-xl-block">
+                    <nav class="site-navigation position-relative text-right" role="navigation">
+
+                        <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                            <li><a href="#home-section" class="nav-link">Personal</a></li>
+                            <li><a href="#home-section" class="nav-link">NRE</a></li>
+                            <li class="has-children">
+                                <a href="#about-section" class="nav-link">Banker</a>
+                                <ul class="dropdown">
+                                    <li><a href="#customer-section" class="nav-link">Customers</a></li>
+                                    <li><a href="#offer-Section" class="nav-link">Offers</a></li>
+                                    <li><a href="#audit-section" class="nav-link">AuditTrails</a></li>
+                                    <li><a href="#cam-section" class="nav-link">CAM</a></li>
+                                    <li><a href="#services-section" class="nav-link">Services</a></li>
+                                    <li><a href="#testimonials-section" class="nav-link">Testimonials</a></li>
+                                    <li class="has-children">
+                                        <a href="#">More Links</a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Menu One</a></li>
+                                            <li><a href="#">Menu Two</a></li>
+                                            <li><a href="#">Menu Three</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+                            <li><a href="#blog-section" class="nav-link">SME</a></li>
+                            <li><a href="#contact-section" class="nav-link">Wholesale</a></li>
+                            <li><a href="#Login" class="nav-link">Login</a></li>
+                            <!--                <li class="social"><a href="#contact-section" class="nav-link"><span class="icon-facebook"></span></a></li>-->
+                            <!--                <li class="social"><a href="#contact-section" class="nav-link"><span class="icon-twitter"></span></a></li>-->
+                            <!--                <li class="social"><a href="#contact-section" class="nav-link"><span class="icon-linkedin"></span></a></li>-->
+                        </ul>
+                    </nav>
+                </div>
+
+
+                <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a
+                        href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a>
+                </div>
+
+            </div>
+        </div>
+
+    </header>
+
+
+    <div class="site-blocks-cover overlay" style="background-image: url(images/hero_2.jpg);" data-aos="fade"
+         id="home-section">
+
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+
+
+                <div class="col-md-10 mt-lg-5 text-center">
+                    <div class="single-text owl-carousel">
+                        <div class="slide">
+                            <h1 class="text-uppercase" data-aos="fade-up">Home Loan</h1>
+                            <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">Switch your existing home loans
+                                to Acme Bank. Our home loans are packed with several exclusive features and benefits.
+                                Both resident and non-resident Indians are eligible for takeover home loans, and can
+                                switch home loans from other Banks/HFCs/NBFCs/FIs, etc. If you have a running home loan
+                                with more than 12 EMIs paid, we can offer you a special scheme where
+                                no income documents are required</p>
+                            <div data-aos="fade-up" data-aos-delay="100">
+                                <img src="./static/images/HomeLoans.jpg" alt="Home Loan" class="img-fluid w-25 ">
+                            </div>
+                        </div>
+
+                        <div class="slide">
+                            <h1 class="text-uppercase" data-aos="fade-up">Instant Personal Loans</h1>
+                            <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">Click the button to get funds
+                                in your account!</p>
+                            <div data-aos="fade-up" data-aos-delay="100">
+                                <!--a href="#" target="_blank" class="btn  btn-primary mr-2 mb-2">Get In Touch</a-->
+                                <img src="./static/images/personal-loan-banner.jpg" alt="Personal Loan"
+                                     class="img-fluid w-25 ">
+
+                            </div>
+                        </div>
+
+                        <div class="slide">
+                            <h1 class="text-uppercase" data-aos="fade-up">Car Loans</h1>
+                            <p class="mb-5 desc" data-aos="fade-up" data-aos-delay="100">Buying a car is a dream come
+                                true for many. Used cars are an affordable alternative for budget buyers, especially
+                                with a used car loan. In fact, this may be the best time to buy a used car, thanks to
+                                the recent doubling of depreciation on cars bought before April 1, 2020. Industry
+                                watchers
+                                say that this will spark increased selling of cars by owners to get a good resale
+                                price. </p>
+                            <div data-aos="fade-up" data-aos-delay="100">
+                                <img src="./static/images/CarLoans.jpg" alt="Personal Loan" class="img-fluid w-25 ">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <a href="#next" class="mouse smoothscroll">
+        <span class="mouse-icon">
+          <span class="mouse-wheel"></span>
+        </span>
+        </a>
+    </div>
+
+
+    <div class="site-section" id="next">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="">
+                    <img src="images/flaticon-svg/svg/001-wallet.svg" alt="Free Website Template by Free-Template.co"
+                         class="img-fluid w-25 mb-4">
+                    <h3 class="card-title">Money Savings</h3>
+                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                </div>
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <img src="images/flaticon-svg/svg/004-cart.svg" alt="Free Website Template by Free-Template.co"
+                         class="img-fluid w-25 mb-4">
+                    <h3 class="card-title">Online Shoppings</h3>
+                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                </div>
+                <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <img src="images/flaticon-svg/svg/006-credit-card.svg"
+                         alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                    <h3 class="card-title">Credit / Debit Cards</h3>
+                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+                    <figure class="circle-bg">
+                        <img src="images/about_2.jpg" alt="Free Website Template by Free-Template.co" class="img-fluid">
+                    </figure>
+                </div>
+                <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
+                    <div class="mb-4">
+                        <h3 class="h3 mb-4 text-black">Banking Solutions Is Our Priority</h3>
+                        <p>A small river named Duden flows by their place and supplies it with the necessary
+                            regelialia.</p>
+
+                    </div>
+
+                    <div class="mb-4">
+                        <ul class="list-unstyled ul-check success">
+                            <li>Officia quaerat eaque neque</li>
+                            <li>Lorem ipsum dolor sit amet</li>
+                            <li>Consectetur adipisicing elit</li>
+                        </ul>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </section>
+
+
+    <section class="site-section border-bottom bg-light" id="services-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center" data-aos="fade">
+                    <h2 class="section-title mb-3">Our Services</h2>
+                </div>
+            </div>
+            <div class="row align-items-stretch">
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up">
+                    <div class="unit-4">
+                        <div class="unit-4-icon">
+                            <img src="images/flaticon-svg/svg/001-wallet.svg"
+                                 alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                        </div>
+                        <div>
+                            <h3>Business Consulting</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione animi tempora sint hic
+                                quod!</p>
+                            <p><a href="#">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="unit-4">
+                        <div class="unit-4-icon">
+                            <img src="images/flaticon-svg/svg/006-credit-card.svg"
+                                 alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                        </div>
+                        <div>
+                            <h3>Credit Card</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores nemo beatae minus
+                                incidunt voluptates?</p>
+                            <p><a href="#">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="unit-4">
+                        <div class="unit-4-icon">
+                            <img src="images/flaticon-svg/svg/002-rich.svg"
+                                 alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                        </div>
+                        <div>
+                            <h3>Income Monitoring</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores optio veritatis aperiam
+                                consequuntur qui.</p>
+                            <p><a href="#">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="">
+                    <div class="unit-4">
+                        <div class="unit-4-icon">
+                            <img src="images/flaticon-svg/svg/003-notes.svg"
+                                 alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                        </div>
+                        <div>
+                            <h3>Insurance Consulting</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia labore suscipit
+                                distinctio inventore doloribus deserunt!</p>
+                            <p><a href="#">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="unit-4">
+                        <div class="unit-4-icon">
+                            <img src="images/flaticon-svg/svg/004-cart.svg"
+                                 alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                        </div>
+                        <div>
+                            <h3>Financial Investment</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque odio voluptatibus
+                                repellat hic officia quibusdam!</p>
+                            <p><a href="#">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="unit-4">
+                        <div class="unit-4-icon">
+                            <img src="images/flaticon-svg/svg/005-megaphone.svg"
+                                 alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4">
+                        </div>
+                        <div>
+                            <h3>Financial Management</h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, iusto eaque velit saepe
+                                nobis ipsa?</p>
+                            <p><a href="#">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="site-section border-bottom bg-light" id="customer-section">
+        <div class="container">
+            <div id="CustomersView">
+
+                <table v-if="showCustomers">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Account Number</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="customer in customers" :key="customer._id">
+                        <td>[[ customer.First_Name ]]</td>
+                        <td>[[ customer.Account_ID ]]</td>
+                        <td>[[ customer._id ]]</td>
+                        <td><a @click="openDetails(customer._id)">View Details</a>
+                            <!--a :href="'#customerDetails-Section?id='+extractOid(customer._id)" class="nav-link">
+                              View Details
+                            </a-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div v-if="showCustDetails" id="customerDetails">
+                    <h3 class="p-3 text-center">Customer Details</h3>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <td>First Name</td>
+                            <td><input type="text" ref="first_name" v-model="customer.First_Name" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Last_Name" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>DOB</td>
+                            <td><input type="text" ref="last_name" v-model="customer.DOB" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Pincode</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Pincode" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Profession</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Profession" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>credit_score</td>
+                            <td><input type="text" ref="last_name" v-model="customer.credit_score"
+                                       :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Income_source</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Income_source"
+                                       :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Industry_Sector</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Industry_Sector"
+                                       :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Income_range</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Income_range"
+                                       :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Payslip</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Payslip" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>IT_return</td>
+                            <td><input type="text" ref="last_name" v-model="customer.IT_return" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>AML</td>
+                            <td><input type="text" ref="last_name" v-model="customer.AML" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Mobile</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Mobile" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input type="text" ref="last_name" v-model="customer.Email" :disabled="!isEditing"
+                                       :class="{view: !isEditing}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button @click="isEditing = !isEditing" v-if="!isEditing">Edit</button>
+                    <button @click="editSave" v-else-if="isEditing">Save</button>
+                    <button @click="sendOffer" v-if="!isEditing">Send Offer</button>
+                    <button v-if="isEditing" @click="isEditing = false">Cancel</button>
+                </div>
+
+                <section class="site-section border-bottom bg-light" id="offer-Section">
+                    <div class="container">
+                        <div v-if="showOffers">
+                            <h3 class="p-3 text-center">Offers</h3>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Account</th>
+                                    <th>Amount</th>
+                                    <th>OTP</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="offer in offers" :key="offer.id">
+                                    <td>[[ offer.Type ]]</td>
+                                    <td>[[ offer.Status ]]</td>
+                                    <td>[[ offer.Account_ID ]]</td>
+                                    <td>[[ offer.Amount ]]</td>
+                                    <td>[[ offer.OTP ]]</td>
+                                    <td><a href="#" @click="openDetails(offer._id)">View Details</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="site-section border-bottom bg-light" id="audit-section">
+                    <div v-if="showAudits" class="container">
+                        <h3 class="p-3 text-center">AuditTrails</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="audit in audittrails" :key="audit._id">
+                                <td>[[ audit.Date.$date ]]</td>
+                                <td>[[ audit.Type ]]</td>
+                                <td>[[ audit.Description ]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="site-section border-bottom bg-light" id="cam-section">
+                    <div v-if="showCams" class="container">
+
+                        <h3 class="p-3 text-center">CAM Reports</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Reported Date</th>
+                                <th>Reported Prepared By</th>
+                                <th>Offer ID</th>
+                                <th>Report JSON</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="report in camreports" :key="report._id">
+                                <td>[[ report.reportedDate ]]</td>
+                                <td>[[ report.reportPreparedBy ]]</td>
+                                <td>[[ report.OfferID ]]</td>
+                                <td>[[ report.reportJSON ]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="site-section border-bottom bg-light" id="cam-section">
+        <div v-if="showCams" class="container">
+
+            <h3 class="p-3 text-center">CAM Reports</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Reported Date</th>
+                    <th>Reported Prepared By</th>
+                    <th>Offer ID</th>
+                    <th>Report JSON</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="report in camreports" :key="report._id">
+                    <td>[[ report.reportedDate ]]</td>
+                    <td>[[ report.reportPreparedBy ]]</td>
+                    <td>[[ report.OfferID ]]</td>
+                    <td>[[ report.reportJSON ]]</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="site-section bg-light" id="contact-section" data-aos="fade">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="section-title mb-3">Contact Us</h2>
+                </div>
+            </div>
+            <div class="row mb-5">
+
+
+                <div class="col-md-4 text-center">
+                    <p class="mb-4">
+                        <span class="icon-room d-block h2 text-primary"></span>
+                        <span>203 Fake St. Mountain View, San Francisco, California, USA</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="mb-4">
+                        <span class="icon-phone d-block h2 text-primary"></span>
+                        <a href="#">+1 232 3235 324</a>
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <p class="mb-0">
+                        <span class="icon-mail_outline d-block h2 text-primary"></span>
+                        <a href="#">youremail@domain.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-5">
+
+
+                    <form action="#" class="p-5 bg-white">
+
+                        <h2 class="h4 text-black mb-5">Contact Form</h2>
+
+                        <div class="row form-group">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="text-black" for="fname">First Name</label>
+                                <input type="text" id="fname" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-black" for="lname">Last Name</label>
+                                <input type="text" id="lname" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+
+                            <div class="col-md-12">
+                                <label class="text-black" for="email">Email</label>
+                                <input type="email" id="email" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+
+                            <div class="col-md-12">
+                                <label class="text-black" for="subject">Subject</label>
+                                <input type="subject" id="subject" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="message">Message</label>
+                                <textarea name="message" id="message" cols="30" rows="7" class="form-control"
+                                          placeholder="Write your notes or questions here..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Send Message" class="btn btn-primary btn-md text-white">
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="site-section bg-light" id="Login" data-aos="fade">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5">
+
+
+                    <form action="#" class="p-5 bg-white">
+
+                        <h2 class="h4 text-black mb-5">Login Form</h2>
+
+                        <div class="row form-group">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="text-black" for="fname">User Name</label>
+                                <input type="text" id="fname" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-black" for="lname">Password</label>
+                                <input type="text" id="lname" class="form-control">
+                            </div>
+                        </div>
+
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Login" class="btn btn-primary btn-md text-white">
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h2 class="footer-heading mb-4">About Us</h2>
+                            <p>Digital banking procedures have made banking processes faster and more convenient for
+                                customers. Banking services are among the most highly utilised services, and the
+                                incorporation of technology such as Artificial intelligence (AI) has brought about a
+                                major transformation in Indian banking.</p>
+                        </div>
+                        <div class="col-md-3 ml-auto">
+                            <h2 class="footer-heading mb-4">Quick Links</h2>
+                            <ul class="list-unstyled">
+                                <li><a href="#about-section" class="smoothscroll">Terms</a></li>
+                                <li><a href="#about-section" class="smoothscroll">Policy</a></li>
+                                <li><a href="#about-section" class="smoothscroll">About Us</a></li>
+                                <li><a href="#services-section" class="smoothscroll">Services</a></li>
+                                <li><a href="#testimonials-section" class="smoothscroll">Testimonials</a></li>
+                                <li><a href="#contact-section" class="smoothscroll">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 footer-social">
+                            <h2 class="footer-heading mb-4">Follow Us</h2>
+                            <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                            <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                            <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                            <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h2 class="footer-heading mb-4">Subscribe Newsletter</h2>
+                    <form action="#" method="post" class="footer-subscribe">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control border-secondary text-white bg-transparent"
+                                   placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary text-black" type="button" id="button-addon2">Send
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row pt-5 mt-5 text-center">
+                <div class="col-md-12">
+                    <div class="border-top pt-5">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script>
+                            All rights reserved | AutomationAnywhere - Accenture InstaLoan Joint Solution</i>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+</div> <!-- .site-wrap -->
+
+<script src="./static/js/jquery-3.3.1.min.js"></script>
+<script src="./static/js/jquery-ui.js"></script>
+<script src="./static/js/popper.min.js"></script>
+<script src="./static/js/bootstrap.min.js"></script>
+<script src="./static/js/owl.carousel.min.js"></script>
+<script src="./static/js/jquery.countdown.min.js"></script>
+<script src="./static/js/jquery.easing.1.3.js"></script>
+<script src="./static/js/aos.js"></script>
+<script src="./static/js/jquery.fancybox.min.js"></script>
+<script src="./static/js/jquery.sticky.js"></script>
+<script src="./static/js/isotope.pkgd.min.js"></script>
+<script src="./static/js/flask_vue_api.js"></script>
+
+<script src="./static/js/main.js"></script>
+
+
 </body>
 </html>
