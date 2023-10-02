@@ -71,8 +71,7 @@ class UserLogin(Resource):
 class OTPLogin(Resource):
     # @api.expect(login_user_model, validate=True)
     def post(self):
-        serverConfig = read_config(
-            r'C:\Users\Sikha.P\OneDrive - Automation Anywhere Software Private Limited\AA_SIKHA\AA_SIKHA\PROJECTS\JSO\BackEnd\Git\JSO\JSO_FIN\serverConfig.json')
+        serverConfig = read_config('serverConfig.json')
         print(serverConfig)
         data = request.get_json()
         print("sasadasdasd")
@@ -401,7 +400,7 @@ def DeployCAMReportBot(CAMReport_json_string, OfferID):
             },
             "UnderWriterEmail": {
                 "type": "STRING",
-                "string": "sikha.p@automationanywhere.com"
+                "string": config_data['CAMReportMail']
             },
             "CAMReportJson": {
                 "type": "STRING",
