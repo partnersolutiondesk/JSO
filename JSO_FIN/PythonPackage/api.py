@@ -288,7 +288,7 @@ class ProceedWithOffer(Resource):
         print("before deploy")
         customer_data = db["customers"].find_one({'Account_ID': offer_data['Account_ID']})
         #comnted for testing purpose
-       # deploySendOTPBot(customer_data['Phone_Number'], otp, customer_data['Email'])
+        deploySendOTPBot(customer_data['Phone_Number'], otp, customer_data['Email'])
 
         # Update offer status as "INTERESTED" "30"
         # offer_data['Status'] = "30"
@@ -534,7 +534,9 @@ def generateCAMReport(offer_data, customer_data):
         "InterestRate": offer_data['InterestRate'],
         "EMIAmount": offer_data['EMIAmount'],
         "LoanTenure": offer_data['TenureInMonths'],
-        "CreditScore": customer_data['credit_score']
+        "CreditScore": customer_data['Credit_Score'],
+        "AnnualRevenue": customer_data['Annual_Revenue'],
+        "Debit_to_Income_Ratio": customer_data['Debit_to_Income_Ratio']
     }
 
     # Convert the dictionary to a JSON string

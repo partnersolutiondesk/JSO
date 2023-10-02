@@ -118,9 +118,14 @@ console.log(params)
             console.error('Error fetching customer data:', error);
           });
          }
- function OTPLogin(){
+ function OTPLogin2(offer){
 
-             axios.post('http://localhost:5000/jso/OTPlogin',{"otp":this.offer.OTP,"offerID":offerID}).then((response) => {
+            url=window.location.href
+            const [hash, query] = url.split('#')[1].split('?')
+            const params = Object.fromEntries(new URLSearchParams(query))
+            const offerID=params.id
+            console.log(offerID,offer.OTP )
+             axios.post('http://localhost:5000/jso/OTPlogin',{"otp":offer.OTP,"offerID": offerID}).then((response) => {
              console.log(response)
              if (response.data.status == "FAIL"){
               alert("OTP Validation Failed")
@@ -324,6 +329,9 @@ console.log(params)
        console.log(this.offer)
           offerSave2(this.offer)
 
+       },
+       OTPLogin1(){
+       OTPLogin2(this.offer)
        },
         openDetails(customerID){
                //console.log(customerID)
