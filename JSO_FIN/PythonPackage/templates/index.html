@@ -550,7 +550,7 @@
                         </table>
                         <button @click="isEditing = !isEditing" v-if="!isEditing">Edit</button>&nbsp;
                         <button @click="ProceedWithOffer" v-if="!isEditing">Yes, I am interested</button>&nbsp;
-                        <button @click="OTPLogin" v-if="OTPSend">Validate OTP</button>&nbsp;
+                        <button @click="OTPLogin1" v-if="OTPSend">Validate OTP</button>&nbsp;
                         <button @click="NotInterested" v-if="!isEditing">No, I am not interested</button>
                         <button @click="offerSave1" v-else-if="isEditing">Save</button>
                         <button v-if="isEditing" @click="isEditing = false">Cancel</button>
