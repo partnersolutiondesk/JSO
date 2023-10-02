@@ -49,11 +49,19 @@ console.log(params)
             console.error('Error fetching customer data:', error);
           });
         }
- function auditTrailSummary(){
+ function auditTrailSummary1(){
+
              axios.post('http://localhost:5000/jso/DeployNoActionOrMidwayMail',{type: "midway",inputs : "Offer Status :  "+offerDetails.StatusText +", LastModified : "+offerDetails.LastModified.$date + ", CreatedOn : "+offerDetails.CreatedOn.$date+ ", ValidityInDays : "+offerDetails.ValidityInDays  }).then((response) => {
                  });
         }
- function NoActionMidWayReminder(){
+ function NoActionMidWayReminder2(){
+   url=window.location.href
+            const [hash, query] = url.split('#')[1].split('?')
+            const params = Object.fromEntries(new URLSearchParams(query))
+            console.log("Pranas//////////////////////")
+
+             console.log(params)
+            const offerID=params.id
          axios.post('http://localhost:5000/jso/getOfferStatus',{id: offerID}).then((response) => {
              console.log(response)
             //compare the Dates
@@ -88,7 +96,14 @@ console.log(params)
             console.error('Error fetching customer data:', error);
           });
         }
- function ProceedWithOffer(){
+ function ProceedWithOffer2(){
+   url=window.location.href
+            const [hash, query] = url.split('#')[1].split('?')
+            const params = Object.fromEntries(new URLSearchParams(query))
+            console.log("Pranas//////////////////////")
+
+             console.log(params)
+            const offerID=params.id
             axios.post('http://localhost:5000/jso/ProceedWithOffer',{"offerID":offerID}).then((response) => {
              console.log(response)
              if (response.data.status == "FAIL"){
@@ -103,7 +118,14 @@ console.log(params)
             console.error('Error fetching customer data:', error);
           });
          }
- function NotInterested(){
+ function NotInterested2(){
+ url=window.location.href
+            const [hash, query] = url.split('#')[1].split('?')
+            const params = Object.fromEntries(new URLSearchParams(query))
+            console.log("Pranas//////////////////////")
+
+             console.log(params)
+            const offerID=params.id
             axios.post('http://localhost:5000/jso/NotInterested',{"offerID":offerID}).then((response) => {
              console.log(response)
              if (response.data.status == "FAIL"){
@@ -330,9 +352,20 @@ console.log(params)
           offerSave2(this.offer)
 
        },
+       NotInterested1(){
+        NotInterested2(this.offer)
+       },
+         ProceedWithOffer1(){
+        ProceedWithOffer2(this.offer)
+       },
        OTPLogin1(){
        OTPLogin2(this.offer)
        },
+        NoActionMidWayReminder1(){
+       NoActionMidWayReminder2(this.offer)
+       },
+
+
         openDetails(customerID){
                //console.log(customerID)
                this.showCustomers = false;

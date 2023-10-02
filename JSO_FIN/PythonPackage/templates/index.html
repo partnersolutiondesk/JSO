@@ -549,21 +549,22 @@
                             </tbody>
                         </table>
                         <button @click="isEditing = !isEditing" v-if="!isEditing">Edit</button>&nbsp;
-                        <button @click="ProceedWithOffer" v-if="!isEditing">Yes, I am interested</button>&nbsp;
+                        <button @click="ProceedWithOffer1" v-if="!isEditing">Yes, I am interested</button>&nbsp;
                         <button @click="OTPLogin1" v-if="OTPSend">Validate OTP</button>&nbsp;
-                        <button @click="NotInterested" v-if="!isEditing">No, I am not interested</button>
+                        <button @click="NotInterested1" v-if="!isEditing">No, I am not interested</button>
                         <button @click="offerSave1" v-else-if="isEditing">Save</button>
                         <button v-if="isEditing" @click="isEditing = false">Cancel</button>
                         <table height="100">
                             <tbody>
                             <tr>
                                 <td>----------------EXCEPTIONAL CASES-------------</td>
-                            </tr>
                             <tr>
                                 <td>
-                                    <button @click="NoActionMidWayReminder" v-else-if="isEditing">No action/Mid way
+                                    <button @click="NoActionMidWayReminder1" v-else-if="isEditing">No action/Mid way
                                         -Reminder
                                     </button>
+<!--            <iframe src='https://aa-se-ind-5.my.automationanywhere.digital/aari/#/embedded?tags=%5B%5D' name="aari-embedded-app" width="100%" height="100%" style="border: none;" referrerpolicy="origin"></iframe>-->
+
                                 </td>
                             </tr>
 
@@ -577,7 +578,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <button @click="auditTrailSummary" v-else-if="isEditing">Audit Trail Summary
+                                    <button @click="auditTrailSummary1" v-else-if="isEditing">Audit Trail Summary
                                     </button>
                                 </td>
                             </tr>
