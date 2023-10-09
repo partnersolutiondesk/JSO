@@ -8,7 +8,7 @@ uri = "mongodb://localhost:27017/test"
 client = MongoClient(uri, server_api=ServerApi('1'))
 try:
     # Create a database
-    db = client["DB_UnSecuredLoans1"]
+    db = client["loanDB"]
     # Create a collection within the database
     collection = db["mycollection"]
     User_Collection =db["users"]

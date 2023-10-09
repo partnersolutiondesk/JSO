@@ -178,7 +178,7 @@ def api_data():
     return data
 
 
-db = client["DB_UnSecuredLoans1"]
+db = client["loanDB"]
 customer_collection = db["customers"]
 
 
@@ -264,11 +264,13 @@ def insertAuditTrailEntry(audittrailEntry, masterEntry, customer_data):
             attributeValue = masterEntry[attributeName]
         audittrail_description = audittrail_description.replace("<" + value + ">", str(attributeValue))
     print(audittrail_description)
-    keyToRemove = "OfferID"
-    if keyToRemove in audittrailEntry:
-        del audittrailEntry[keyToRemove]
+    #keyToRemove = "OfferID"
+    # if keyToRemove in audittrailEntry:
+    #     del audittrailEntry[keyToRemove]
     audittrailEntry['Description'] = audittrail_description
     audittrails_collection.insert_one(audittrailEntry)
+    print("audittrailEntryaudittrailEntryaudittrailEntryaudittrailEntry")
+    print(audittrailEntry)
     return audittrails_collection
 
 
@@ -410,6 +412,11 @@ def DeployCAMReportBot(CAMReport_json_string, OfferID):
                 "type": "STRING",
                 "string": OfferID
             }
+        ,
+        "CAMReportFolder": {
+            "type": "STRING",
+            "string": config_data['OutputFolderPath']
+        }
         },
         "automationPriority": "PRIORITY_MEDIUM",
         "unattendedRequest": {
@@ -646,6 +653,8 @@ class ReviewOfferStatus(Resource):
             "Date": datetime.utcnow(), "Status": statusID, "Actor_ID": "Admin",
             "Role": "Employee", "Type": "Offer", "Description": "", "OfferID": str(offer_data['_id'])
         }
+        print("before insert")
+        print(audittrailEntry)
         insertAuditTrailEntry(audittrailEntry, masterEntry, "")
         return {'status': 'Status updated'}, 200
 
@@ -1149,3 +1158,16 @@ def deployTriggerLoanProcessBot(offerID, customerObjID, getCustomerDetailsAPIUrl
         print(f"API request failed with status code {response.status_code}")
         return "API request failed with status code "
     # print(f"API request failed: {e}")
+
+
+@ns.route('/getAudittrails/<string:accountID>')
+class getAudittrails(Resource):
+    def get(self, accountID):
+        print(accountID)
+        audittrail_collection = db["audittrails"]
+        offer_data = db["offers"].find_one({'Account_ID': accountID})
+        auditrails = db["audittrails"].find({'OfferID': str(offer_data["_id"])})
+
+        list_cur = list(auditrails)
+        res = dumps(list_cur, indent=2)
+        return {'audittrails': res}, 200

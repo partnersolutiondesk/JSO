@@ -426,7 +426,7 @@
                         </tr>
                         <tr>
                             <td>Mobile</td>
-                            <td><input type="text" ref="last_name" v-model="customer.Mobile" :disabled="!isEditing"
+                            <td><input type="text" ref="last_name" v-model="customer.Phone_Number" :disabled="!isEditing"
                                        :class="{view: !isEditing}"></td>
                         </tr>
                         <tr>
@@ -495,6 +495,20 @@
                                 <td><input type="text" ref="last_name" v-model="offer.customerDetails.Last_Name"
                                            :disabled="!isEditing"
                                            :class="{view: !isEditing}"></td>
+                            </tr>
+                             <tr>
+                                <td>Email</td>
+                                <td><input type="text" ref="email" v-model="offer.customerDetails.Email"
+                                           :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+
+                            </tr>
+                             <tr>
+                                <td>Phone Number</td>
+                                <td><input type="text" ref="phone" v-model="offer.customerDetails.Phone_Number"
+                                           :disabled="!isEditing"
+                                           :class="{view: !isEditing}"></td>
+
                             </tr>
                             <tr>
                                 <td>Amount</td>
