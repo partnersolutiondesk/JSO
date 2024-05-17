@@ -13,4 +13,5 @@ Mainly 3 components involved in this Banking Solution
 You can find the following files in this repository
 1. Exported Automation Anywhere Bots and Processes
 2. Sample scoring Engine
+3. Demo video of the whole solution
    
