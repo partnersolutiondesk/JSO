@@ -1,4 +1,4 @@
-# JSO
+# Increase Loan subscription volume solution
 This Increase Loan subscription volume solution facilitates customer interaction with offers provided by the bank. Upon receiving an offer email, customers can access the banking website by clicking on the link provided. Once logged in with their credentials, they can review the offer details.
 For instance, if the bank offers a loan of 1 lakh rupees but the customer desires an upgrade to 2 lakhs, they can select the "Not interested" option on the website and provide their comments. Behind the scenes, A360 bots and processes integrated within the website manage customer responses, guiding them through subsequent steps seamlessly. Thus, the A360 bots and website autonomously address customer requests without requiring human intervention.
 
